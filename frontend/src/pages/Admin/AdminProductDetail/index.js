@@ -16,10 +16,10 @@ import "../style.css";
 import { Formik, FieldArray } from "formik";
 import validationSchema from "./validations";
 import { message } from "antd";
-
+import { useNavigate } from "react-router-dom";
 function AdminProductDetail() {
   const { product_id } = useParams();
-
+  const navigate = useNavigate();
   const { isLoading, isError, data, error } = useQuery(
     ["admin:product", product_id],
     () => fetchProduct(product_id)
@@ -33,7 +33,6 @@ function AdminProductDetail() {
   const handleSubmit = async (values, bag) => {
     console.log("submitted");
     message.loading({ content: "Loading... ", key: "product_update" });
-
     try {
       await updateProduct(values, product_id);
 
@@ -42,6 +41,7 @@ function AdminProductDetail() {
         key: "product_update",
         duration: 2,
       });
+      navigate("/admin/products");
     } catch (e) {
       message.error("the product does not updated.");
     }
@@ -71,8 +71,7 @@ function AdminProductDetail() {
             photos: data.photos,
           }}
           validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
+          onSubmit={handleSubmit}>
           {({
             handleSubmit,
             errors,
@@ -154,16 +153,14 @@ function AdminProductDetail() {
                                     ml="4"
                                     type="button"
                                     colorScheme="red"
-                                    onClick={() => arrayHelpers.remove(index)}
-                                  >
+                                    onClick={() => arrayHelpers.remove(index)}>
                                     Remove
                                   </Button>
                                 </div>
                               ))}
                             <Button
                               mt="5"
-                              onClick={() => arrayHelpers.push("")}
-                            >
+                              onClick={() => arrayHelpers.push("")}>
                               Add a Photo
                             </Button>
                           </div>
@@ -174,8 +171,7 @@ function AdminProductDetail() {
                       mt={4}
                       width="full"
                       type="submit"
-                      isLoading={isSubmitting}
-                    >
+                      isLoading={isSubmitting}>
                       Update
                     </Button>
                   </form>

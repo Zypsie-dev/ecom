@@ -14,8 +14,10 @@ import { Link } from "react-router-dom";
 import { Formik, FieldArray } from "formik";
 import validationSchema from "./validations";
 import { message } from "antd";
+import { useNavigate } from "react-router-dom";
 
 function NewProduct() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const newProductMutation = useMutation(postProduct, {
     onSuccess: () => queryClient.invalidateQueries("admin:products"),
@@ -37,6 +39,7 @@ function NewProduct() {
           key: "product_update",
           duration: 2,
         });
+        navigate("/admin/products");
       },
     });
   };
@@ -66,8 +69,7 @@ function NewProduct() {
             photos: [],
           }}
           validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
+          onSubmit={handleSubmit}>
           {({
             handleSubmit,
             errors,
@@ -149,16 +151,14 @@ function NewProduct() {
                                     ml="4"
                                     type="button"
                                     colorScheme="red"
-                                    onClick={() => arrayHelpers.remove(index)}
-                                  >
+                                    onClick={() => arrayHelpers.remove(index)}>
                                     Remove
                                   </Button>
                                 </div>
                               ))}
                             <Button
                               mt="5"
-                              onClick={() => arrayHelpers.push("")}
-                            >
+                              onClick={() => arrayHelpers.push("")}>
                               Add a Photo
                             </Button>
                           </div>
@@ -169,8 +169,7 @@ function NewProduct() {
                       mt={4}
                       width="full"
                       type="submit"
-                      isLoading={isSubmitting}
-                    >
+                      isLoading={isSubmitting}>
                       Add Product
                     </Button>
                   </form>

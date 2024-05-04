@@ -6,5 +6,5 @@ mongoose
     useUnifiedTopology: true,
     useCreateIndex: true,
   })
-  .then(() => console.log('MongoDB: Connectted'))
-  .catch((err) => console.log(err.message));
+  .then(() => console.log('MongoDB: Connected'))
+  .catch((err) => console.log("error" + err.message));
